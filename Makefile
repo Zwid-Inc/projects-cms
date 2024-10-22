@@ -9,16 +9,13 @@ build:
 	docker build -t $(DOCKER_IMAGE_NAME) -f $(DOCKERFILE_PATH) .
 
 # Run the Docker container
-run:
+jan:
+	docker rm $(DOCKER_CONTAINER_NAME)
 	docker run -p $(PORT):$(PORT) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_IMAGE_NAME)
 
 # Stop the Docker container
 stop:
 	docker stop $(DOCKER_CONTAINER_NAME)
-
-# Remove the Docker container
-rm:
-	docker rm $(DOCKER_CONTAINER_NAME)
 
 # Clean up Docker images and containers
 clean:

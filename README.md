@@ -2,6 +2,6 @@
 
 ## client
 
-`pnpm i` - install `node_modules`
+`make build` - build `docker` image
 
-`pnpm run dev` - run dev server
+`make run` - run `dockerized` dev server

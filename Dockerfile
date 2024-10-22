@@ -5,7 +5,7 @@ FROM node:23
 WORKDIR /client
 
 # Copy the package.json and pnpm-lock.yaml files to the container
-COPY package.json pnpm-lock.yaml ./
+COPY client/package.json client/pnpm-lock.yaml ./
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -14,7 +14,7 @@ RUN npm install -g pnpm
 RUN pnpm install
 
 # Copy the rest of the application code to the container
-COPY . .
+COPY client/ ./
 
 # Build the application
 RUN pnpm run build

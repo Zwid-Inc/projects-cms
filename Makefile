@@ -9,7 +9,7 @@ build:
 	docker build -t $(DOCKER_IMAGE_NAME) -f $(DOCKERFILE_PATH) .
 
 # Run the Docker container
-jan:
+run:
 	docker rm $(DOCKER_CONTAINER_NAME)
 	docker run -p $(PORT):$(PORT) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_IMAGE_NAME)
 

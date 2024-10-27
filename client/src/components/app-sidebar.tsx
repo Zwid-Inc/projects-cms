@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Projector, Settings, ThermometerSnowflake } from "lucide-react";
 
 import {
   Sidebar,
@@ -16,28 +16,18 @@ import { ThemeToggle } from "./ThemeToggle";
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
-    icon: Home,
+    title: "Projects",
+    url: "/projects",
+    icon: Projector,
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
+    title: "Tasks",
+    url: "/tasks",
+    icon: ThermometerSnowflake,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
+    title: "Account",
+    url: "/account",
     icon: Settings,
   },
 ];
@@ -47,7 +37,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Projects CMS</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

@@ -15,7 +15,9 @@ export const Navbar = () => {
       <div className="flex w-full justify-between items-center">
         <div className="flex items-center">
           <SidebarTrigger />
-          <h1 className="text-xl font-bold ml-2">Stock Tracker</h1>
+          <a href="/">
+            <h1 className="text-xl font-bold ml-2">Stock Tracker</h1>
+          </a>
         </div>
         <div className="flex justify-center flex-1">
           <p className="font-bold">Profits: 267.83 PLN</p>

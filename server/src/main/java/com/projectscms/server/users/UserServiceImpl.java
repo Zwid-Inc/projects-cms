@@ -1,7 +1,5 @@
 package com.projectscms.server.users;
 
-import com.projectscms.server.projects.Project;
-import com.projectscms.server.projects.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +15,6 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
-    private final ProjectService projectService;
 
     @Transactional
     @Override
@@ -66,19 +61,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUserById(long id) {
         LOG.debug(">>>deleteUserById<<<");
-
         if (userRepository.existsById(id)) {
-            List<Project> projects = projectService.getAllProjects();
-
-            // update projectMaintainers
-            for (Project project : projects) {
-                Set<User> updatedMaintainers = project.getProjectMaintainers().stream()
-                        .filter(maintainer -> !maintainer.getUserId().equals(id))
-                        .collect(Collectors.toSet());
-
-                project.setProjectMaintainers(updatedMaintainers);
-            }
-
             userRepository.deleteById(id);
             return true;
         }

@@ -41,7 +41,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Roles> roles;
 
-    @OneToMany( mappedBy = "projectOwner", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectOwner", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"projectOwner", "projectOwnerId"})
     private Set<Project> ownedProjects;
 

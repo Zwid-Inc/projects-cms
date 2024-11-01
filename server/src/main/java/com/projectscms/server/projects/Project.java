@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class Project {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User projectOwner;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JsonIgnoreProperties({"ownedProjects"})
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<User> projectMaintainers;
@@ -78,6 +79,17 @@ public class Project {
         return projectMaintainers.stream()
                 .map(user -> Map.of("userId", user.getUserId()))
                 .collect(Collectors.toList());
+    }
+
+    public void removeMaintainerById(Long userId) {
+        Iterator<User> iterator = projectMaintainers.iterator();
+        while (iterator.hasNext()) {
+            User maintainer = iterator.next();
+            if (maintainer.getUserId().equals(userId)) { // Zakładając, że getUserId() zwraca userId
+                iterator.remove(); // Usuwa maintainer
+                break; // Możemy zakończyć po znalezieniu i usunięciu
+            }
+        }
     }
 
 }

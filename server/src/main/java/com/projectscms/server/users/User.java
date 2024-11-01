@@ -1,6 +1,7 @@
 package com.projectscms.server.users;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
+import com.projectscms.server.projects.Project;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,11 +13,12 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     @NotBlank
     private String name;
@@ -31,22 +33,23 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    // TODO after adding Project
-   /* @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectOwner")
-    @JsonManagedReference
-    private Set<Project> ownedProjects; */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Roles> roles;
 
-    @JsonProperty("password")
-    private String password;
+    @OneToMany( mappedBy = "projectOwner", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"projectOwner", "projectOwnerId"})
+    private Set<Project> ownedProjects;
 
     public void setPassword(String password) {
         this.password = password;
         //TODO after configuring
         //this.password = new BCryptPasswordEncoder().encode(password);
     }
+
+
 }

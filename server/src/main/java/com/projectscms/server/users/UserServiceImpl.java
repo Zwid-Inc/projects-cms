@@ -1,5 +1,7 @@
 package com.projectscms.server.users;
 
+import com.projectscms.server.projects.Project;
+import com.projectscms.server.projects.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
 
     @Transactional
     @Override
@@ -43,7 +46,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Transactional
     @Override
     public boolean updateUser(long id, User user) {
@@ -59,12 +61,26 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean deleteUserById(long id) {
+    public boolean deleteUserById(long userId) {
         LOG.debug(">>>deleteUserById<<<");
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
+
+        // Sprawdzenie, czy użytkownik istnieje
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+
+            User user = userOptional.get();
+
+            List<Project> projects = projectRepository.findByMaintainersContains(user.getUserId());
+
+
+            for (Project project : projects) {
+                project.removeMaintainerById(userId);
+            }
+
+            userRepository.delete(user);
             return true;
         }
+
         return false;
     }
 }

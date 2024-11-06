@@ -21,7 +21,7 @@ public class ProjectServiceImpl implements ProjectService {
     public boolean addProject(Project project) {
         LOG.debug(">>>addProject " + project.toString() + "<<<");
         projectRepository.saveAndFlush(project);
-        return projectRepository.existsById(project.getProjectId());
+        return projectRepository.existsById(project.getId());
     }
 
     @Override

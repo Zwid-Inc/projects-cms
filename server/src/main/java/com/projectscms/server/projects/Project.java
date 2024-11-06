@@ -1,8 +1,10 @@
 package com.projectscms.server.projects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.projectscms.server.tasks.Task;
 import com.projectscms.server.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -34,7 +36,7 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long projectId;
+    private Long id;
 
     @Column(nullable = false, length = 50)
     private String projectName;
@@ -59,9 +61,9 @@ public class Project {
     private LocalDateTime releaseDate;
 
     //TODO AFTER ADDING API FOR TASKS
-    /*@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Task> taskList; */
+    private List<Task> taskList;
 
     public Project(String projectName, String projectDescription) {
         this.projectName = projectName;

@@ -28,6 +28,7 @@
 /client/out/
 /**/*.tsbuildinfo
 /**/next-env.d.ts
+/**/pnpm-lock.yaml
 
 # IDE and Editor files
 /**/.idea/

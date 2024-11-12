@@ -24,7 +24,8 @@ export const Navbar = () => {
     >
       <div className="flex w-full justify-between items-center">
         <div className="flex items-center">
-          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+          {/* Add group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-16 to className to animate navbar while height change */}
+          <header className="flex h-12 shrink-0 items-center gap-2 transition-[width,height] ease-linear ">
             <div className="flex items-center gap-2 px-4">
               <Separator orientation="vertical" className="mr-2 h-4" />
               <Breadcrumb>
@@ -41,10 +42,10 @@ export const Navbar = () => {
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
+            <a href="/">
+              <h1 className="text-xl font-bold ml-2">Stock Tracker</h1>
+            </a>
           </header>
-          <a href="/">
-            <h1 className="text-xl font-bold ml-2">Stock Tracker</h1>
-          </a>
         </div>
         <div className="flex justify-center flex-1">
           <p className="font-bold">Profits: 267.83 PLN</p>

@@ -74,6 +74,7 @@ public class ProjectServiceImpl implements ProjectService {
             project.setProjectOwner(null);
 
             project.getProjectMaintainers().clear();
+            project.getTaskList().clear();
 
             projectRepository.save(project);
 

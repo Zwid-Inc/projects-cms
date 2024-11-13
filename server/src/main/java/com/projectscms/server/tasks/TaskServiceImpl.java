@@ -59,6 +59,13 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     public void deleteTaskById(Long id) {
-        taskRepository.deleteById(id);
+
+        Optional<Task> taskOpt = taskRepository.findById(id);
+        taskOpt.ifPresent(task -> {
+            task.setProject(null);
+            taskRepository.save(task);
+            taskRepository.deleteById(id);
+        });
+
     }
 }

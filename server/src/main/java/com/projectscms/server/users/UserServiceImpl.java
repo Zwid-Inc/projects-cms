@@ -64,7 +64,6 @@ public class UserServiceImpl implements UserService {
     public boolean deleteUserById(long userId) {
         LOG.debug(">>>deleteUserById<<<");
 
-        // Sprawdzenie, czy użytkownik istnieje
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
 

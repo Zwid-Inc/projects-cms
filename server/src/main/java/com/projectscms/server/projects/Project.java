@@ -17,20 +17,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @JsonPropertyOrder({
-        "projectId",
+        "id",
         "projectName",
         "projectDescription",
         "projectOwnerId",
         "MaintainersIds",
         "creationTime",
-        "releaseDate"
+        "releaseDate",
+        "taskList"
 })
 public class Project {
 
@@ -60,8 +60,7 @@ public class Project {
 
     private LocalDateTime releaseDate;
 
-    //TODO AFTER ADDING API FOR TASKS
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private List<Task> taskList;
 
@@ -80,16 +79,16 @@ public class Project {
     public List<Map<String, Long>> getProjectMaintainersIds() {
         return projectMaintainers.stream()
                 .map(user -> Map.of("userId", user.getUserId()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void removeMaintainerById(Long userId) {
         Iterator<User> iterator = projectMaintainers.iterator();
         while (iterator.hasNext()) {
             User maintainer = iterator.next();
-            if (maintainer.getUserId().equals(userId)) { // Zakładając, że getUserId() zwraca userId
-                iterator.remove(); // Usuwa maintainer
-                break; // Możemy zakończyć po znalezieniu i usunięciu
+            if (maintainer.getUserId().equals(userId)) {
+                iterator.remove();
+                break;
             }
         }
     }

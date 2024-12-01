@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "./ThemeToggle";
+import Link from "next/link";
 
 export const Navbar = () => {
   const { open } = useSidebar();
@@ -42,9 +43,9 @@ export const Navbar = () => {
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
-            <a href="/">
+            <Link href="/">
               <h1 className="text-xl font-bold ml-2">Stock Tracker</h1>
-            </a>
+            </Link>
           </header>
         </div>
         <div className="flex justify-center flex-1">

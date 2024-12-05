@@ -28,7 +28,7 @@ INSERT INTO user (email,index_nr,last_name,name,password)
 VALUES ("genowefa.kowalska@pbs.edu.pl",112223,"Kowalska","Genowefa","test123");
 
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("maria.wesolowska@pbs.edu.pl",113224,"Wesołowska","Maria","test123");
+VALUES ("maria.wesolowska@pbs.edu.pl",113224,"Wesolowska","Maria","test123");
 
 
 -- user_roles

@@ -9,49 +9,17 @@ interface StockData {
   change: string;
   changePercent: string;
   isIncrease: boolean;
+  volume: number;
 }
 
 async function getStockData(symbol: string): Promise<StockData[]> {
-  try {
-    const response = await fetch(`/api?symbol=${symbol}`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch stock data");
-    }
-    const text = await response.text();
-
-    // Rest of the function remains the same
-    const rows = text.split("\n");
-    const data = rows
-      .slice(-180)
-      .map((row) => {
-        const values = row.split(",");
-        const price = parseFloat(values[4]);
-        return {
-          date: values[0],
-          price,
-        };
-      })
-      .filter((item) => item.date && !isNaN(item.price))
-      .reverse();
-
-    const dataWithChanges = data.map((item, index) => {
-      const prevPrice =
-        index < data.length - 1 ? data[index + 1].price : item.price;
-      const change = item.price - prevPrice;
-      const changePercent = (change / prevPrice) * 100;
-
-      return {
-        ...item,
-        change: change.toFixed(2),
-        changePercent: changePercent.toFixed(2),
-        isIncrease: change > 0,
-      };
-    });
-
-    return dataWithChanges;
-  } catch (error) {
+  const response = await fetch(
+    `http://localhost:8080/api/stock?symbol=${symbol}`
+  );
+  if (!response.ok) {
     throw new Error("Failed to fetch stock data");
   }
+  return response.json();
 }
 
 function formatPriceWithColoredDiff(
@@ -165,11 +133,16 @@ export default function StockPage() {
                     </td>
                     <td
                       className={`border p-2 ${
-                        item.isIncrease ? "text-green-600" : "text-red-600"
+                        parseFloat(item.change) === 0
+                          ? ""
+                          : item.isIncrease
+                          ? "text-green-600"
+                          : "text-red-600"
                       }`}
                     >
                       {item.change} ({item.changePercent}%)
                     </td>
+                    <td className="border p-2">{item.volume}</td>
                   </tr>
                 );
               })}

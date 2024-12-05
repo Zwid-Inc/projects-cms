@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-jdk-slim
 WORKDIR /server
 COPY server/build.gradle server/settings.gradle ./
 COPY server/gradlew server/gradlew.bat ./

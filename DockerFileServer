@@ -1,0 +1,15 @@
+FROM openjdk:21-jdk-slim
+WORKDIR /server
+COPY server/build.gradle server/settings.gradle ./
+COPY server/gradlew server/gradlew.bat ./
+COPY server/gradle ./gradle
+RUN chmod +x gradlew
+RUN ./gradlew dependencies --no-daemon
+COPY server/ ./
+RUN chmod +x gradlew
+RUN ./gradlew bootJar --no-daemon
+COPY dockerize /usr/local/bin/dockerize
+RUN chmod +x /usr/local/bin/dockerize
+EXPOSE 8080
+
+CMD ["dockerize", "-wait", "tcp://project_cms-db:3306", "-timeout", "60s", "java", "-jar", "build/libs/server-0.0.1-SNAPSHOT.jar"]

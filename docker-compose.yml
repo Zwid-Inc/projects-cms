@@ -21,6 +21,7 @@ services:
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: p@ssw0rd
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      CLIENT_URL: localhost:3000
 
   database:
     image: mysql:5.7

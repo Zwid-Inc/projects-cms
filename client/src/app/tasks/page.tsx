@@ -1,7 +1,4 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { Metadata } from "next";
-import Image from "next/image";
 import { z } from "zod";
 
 import { columns } from "@/tasks/components/columns";
@@ -14,38 +11,49 @@ export const metadata: Metadata = {
   description: "A task and issue tracker build using Tanstack Table.",
 };
 
-// Simulate a database read for tasks.
 async function getTasks() {
-  const data = await fs.readFile(
-    path.join(process.cwd(), "src/tasks/data/tasks.json")
-  );
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+    const response = await fetch(`${apiUrl}/api/tasks`, {
+      cache: "no-store",
+    });
 
-  const tasks = JSON.parse(data.toString());
+    if (!response.ok) {
+      throw new Error("Failed to fetch tasks");
+    }
 
-  return z.array(taskSchema).parse(tasks);
+    const data = await response.json();
+    const tasks = data.content || [];
+
+    // Map backend response to match schema
+    const transformedTasks = tasks.map(
+      (task: {
+        id: string;
+        taskName: string;
+        description: string;
+        sequenceNr: number;
+        creationDateTime: string;
+      }) => ({
+        id: task.id,
+        taskName: task.taskName,
+        description: task.description,
+        sequenceNr: task.sequenceNr,
+        creationDateTime: task.creationDateTime,
+      })
+    );
+
+    return z.array(taskSchema).parse(transformedTasks);
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    return [];
+  }
 }
 
 export default async function TaskPage() {
   const tasks = await getTasks();
-
+  console.log(tasks);
   return (
     <>
-      <div className="md:hidden">
-        <Image
-          src="/examples/tasks-light.png"
-          width={1280}
-          height={998}
-          alt="Playground"
-          className="block dark:hidden"
-        />
-        <Image
-          src="/examples/tasks-dark.png"
-          width={1280}
-          height={998}
-          alt="Playground"
-          className="hidden dark:block"
-        />
-      </div>
       <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
         <div className="flex items-center justify-between space-y-2">
           <div>
@@ -58,7 +66,7 @@ export default async function TaskPage() {
             <UserNav />
           </div>
         </div>
-        <DataTable data={tasks} columns={columns} />
+        {/* <DataTable data={tasks} columns={columns} /> */}
       </div>
     </>
   );

@@ -7,6 +7,9 @@ services:
       - "3000:3000"
     environment:
       NODE_ENV: dev
+      NEXT_PUBLIC_API_URL: http://server:8080
+    networks:
+      - app-network
 
   server:
     build:
@@ -22,7 +25,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: p@ssw0rd
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       CLIENT_URL: localhost:3000
-
+    networks:
+      - app-network
   database:
     image: mysql:5.7
     container_name: project_cms-db
@@ -36,6 +40,12 @@ services:
       MYSQL_PASSWORD: p@ssw0rd
     volumes:
       - project_cms-db_data:/var/lib/mysql
+    networks:
+      - app-network
 
 volumes:
   project_cms-db_data:
+
+networks:
+  app-network:
+    driver: bridge

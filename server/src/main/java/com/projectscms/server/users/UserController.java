@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class UserController {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> createUser(@RequestBody User user) {
         try {
             userService.createUser(user);
@@ -29,22 +31,25 @@ public class UserController {
         }
     }
 
-    @GetMapping("/all")
-   // @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> getAllUsers() {
+
         List<User> users = userService.getAllUsers();
         return users.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     public ResponseEntity<Optional<User>> getUserById(@PathVariable long id) {
         Optional<User> user = userService.getUserById(id);
         return user.isPresent() ? new ResponseEntity<>(user, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping
+    @GetMapping("/email")
+    @PreAuthorize("hasRole('ADMIN') or #email == principal.email")
     public ResponseEntity<Optional<User>> getUserByEmail(@RequestParam String email) {
         Optional<User> user = userService.getUserByEmail(email);
         return user.isPresent() ? new ResponseEntity<>(user, HttpStatus.OK) :
@@ -54,6 +59,7 @@ public class UserController {
 
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     public ResponseEntity<Void> updateUser(@RequestBody User user, @PathVariable long id) {
         boolean isUpdated = userService.updateUser(id, user);
         return isUpdated ? new ResponseEntity<>(HttpStatus.OK) :
@@ -61,6 +67,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         boolean isDeleted = userService.deleteUserById(id);
         return isDeleted ? new ResponseEntity<>(HttpStatus.OK) :

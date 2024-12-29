@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,6 +25,7 @@ public class TaskController {
 
     @GetMapping
  //   @RolesAllowed("ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     Page<Task> getTasks(@RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "size", defaultValue = "20") int size){
         Pageable pageable = PageRequest.of(page, size);
@@ -32,6 +34,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
   //  @RolesAllowed("ADMIN")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getTaskById(@PathVariable Long id){
          return taskService.getTaskById(id).isPresent() ?
                 ResponseEntity.ok(taskService.getTaskById(id).get()) :
@@ -39,6 +42,7 @@ public class TaskController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> addTask(@RequestBody Task task) {
         try{
             Task createdTask = taskService.addTask(task);
@@ -52,6 +56,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody Task task) {
         return taskService.updateTaskById(id, task).isPresent() ?
                 ResponseEntity.ok(taskService.updateTaskById(id, task).get()) :
@@ -60,6 +65,7 @@ public class TaskController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id).map(task -> {
             taskService.deleteTaskById(id);

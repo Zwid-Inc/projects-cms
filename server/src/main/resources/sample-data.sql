@@ -46,35 +46,35 @@ INSERT INTO user_roles (user_id,roles) VALUES (10,"USER");
 -- projects
 
 INSERT INTO project (id,project_name,project_description,
-                     project_owner_user_id,creation_time,release_date)
+                     project_owner_id,creation_time,release_date)
 VALUES (1,"Project 1 name","Project 1 description",1,"2024-11-01T15:00:00","2024-11-02T17:00:00");
 
 INSERT INTO project (id,project_name,project_description,
-                     project_owner_user_id,creation_time,release_date)
+                     project_owner_id,creation_time,release_date)
 VALUES (2,"Project 2 name","Project 2 description",2,"2024-11-03T15:00:00","2024-11-04T17:00:00");
 
-INSERT INTO project (id, project_name, project_description, project_owner_user_id, creation_time, release_date)
+INSERT INTO project (id, project_name, project_description, project_owner_id, creation_time, release_date)
 VALUES (3, "Project 3 name", "Project 3 description", 1, "2024-11-05T15:00:00", "2024-11-06T17:00:00");
 
-INSERT INTO project (id, project_name, project_description, project_owner_user_id, creation_time, release_date)
+INSERT INTO project (id, project_name, project_description, project_owner_id, creation_time, release_date)
 VALUES (4, "Project 4 name", "Project 4 description", 2, "2024-11-07T15:00:00", "2024-11-08T17:00:00");
 
-INSERT INTO project (id, project_name, project_description, project_owner_user_id, creation_time, release_date)
+INSERT INTO project (id, project_name, project_description, project_owner_id, creation_time, release_date)
 VALUES (5, "Project 5 name", "Project 5 description", 3, "2024-11-09T15:00:00", "2024-11-10T17:00:00");
 
-INSERT INTO project (id, project_name, project_description, project_owner_user_id, creation_time, release_date)
+INSERT INTO project (id, project_name, project_description, project_owner_id, creation_time, release_date)
 VALUES (6, "Project 6 name", "Project 6 description", 4, "2024-11-11T15:00:00", "2024-11-12T17:00:00");
 
-INSERT INTO project (id, project_name, project_description, project_owner_user_id, creation_time, release_date)
+INSERT INTO project (id, project_name, project_description, project_owner_id, creation_time, release_date)
 VALUES (7, "Project 7 name", "Project 7 description", 3, "2024-11-13T15:00:00", "2024-11-14T17:00:00");
 
-INSERT INTO project (id, project_name, project_description, project_owner_user_id, creation_time, release_date)
+INSERT INTO project (id, project_name, project_description, project_owner_id, creation_time, release_date)
 VALUES (8, "Project 8 name", "Project 8 description", 4, "2024-11-15T15:00:00", "2024-11-16T17:00:00");
 
-INSERT INTO project (id, project_name, project_description, project_owner_user_id, creation_time, release_date)
+INSERT INTO project (id, project_name, project_description, project_owner_id, creation_time, release_date)
 VALUES (9, "Project 9 name", "Project 9 description", 1, "2024-11-17T15:00:00", "2024-11-18T17:00:00");
 
-INSERT INTO project (id, project_name, project_description, project_owner_user_id, creation_time, release_date)
+INSERT INTO project (id, project_name, project_description, project_owner_id, creation_time, release_date)
 VALUES (10, "Project 10 name", "Project 10 description", 2, "2024-11-19T15:00:00", "2024-11-20T17:00:00");
 
 
@@ -337,34 +337,34 @@ VALUES (80, 8, 10, "Task 8.10", "Description for Task 8.10", "2024-11-16T00:00:0
 
 
 -- Project 1 Maintainers
-INSERT INTO project_project_maintainers (project_id, project_maintainers_user_id)
+INSERT INTO project_project_maintainers (project_id, project_maintainers_id)
 VALUES (1, 1), (1, 2), (1, 3);  -- Project 1 owner (user 1) and other maintainers
 
 -- Project 2 Maintainers
-INSERT INTO project_project_maintainers (project_id, project_maintainers_user_id)
+INSERT INTO project_project_maintainers (project_id, project_maintainers_id)
 VALUES (2, 2), (2, 3), (2, 4);  -- Project 2 owner (user 2) and other maintainers
 
 -- Project 3 Maintainers
-INSERT INTO project_project_maintainers (project_id, project_maintainers_user_id)
+INSERT INTO project_project_maintainers (project_id, project_maintainers_id)
 VALUES (3, 1), (3, 4), (3, 5);  -- Project 3 owner (user 1) and other maintainers
 
 -- Project 4 Maintainers
-INSERT INTO project_project_maintainers (project_id, project_maintainers_user_id)
+INSERT INTO project_project_maintainers (project_id, project_maintainers_id)
 VALUES (4, 2), (4, 5), (4, 6);  -- Project 4 owner (user 2) and other maintainers
 
 -- Project 5 Maintainers
-INSERT INTO project_project_maintainers (project_id, project_maintainers_user_id)
+INSERT INTO project_project_maintainers (project_id, project_maintainers_id)
 VALUES (5, 3), (5, 6), (5, 7);  -- Project 5 owner (user 3) and other maintainers
 
 -- Project 6 Maintainers
-INSERT INTO project_project_maintainers (project_id, project_maintainers_user_id)
+INSERT INTO project_project_maintainers (project_id, project_maintainers_id)
 VALUES (6, 4), (6, 7), (6, 8);  -- Project 6 owner (user 4) and other maintainers
 
 -- Project 7 Maintainers
-INSERT INTO project_project_maintainers (project_id, project_maintainers_user_id)
+INSERT INTO project_project_maintainers (project_id, project_maintainers_id)
 VALUES (7, 3), (7, 8), (7, 5);  -- Project 7 owner (user 3) and other maintainers
 
 -- Project 8 Maintainers
-INSERT INTO project_project_maintainers (project_id, project_maintainers_user_id)
+INSERT INTO project_project_maintainers (project_id, project_maintainers_id)
 VALUES (8, 4), (8, 6), (8, 7);  -- Project 8 owner (user 4) and other maintainers
 

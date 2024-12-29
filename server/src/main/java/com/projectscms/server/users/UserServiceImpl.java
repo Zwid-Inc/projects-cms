@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
             User user = userOptional.get();
 
-            List<Project> projects = projectRepository.findByMaintainersContains(user.getUserId());
+            List<Project> projects = projectRepository.findByMaintainersContains(user.getId());
 
 
             for (Project project : projects) {

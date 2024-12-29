@@ -3,6 +3,7 @@ package com.projectscms.server.projects;
 import com.projectscms.server.users.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +15,7 @@ public class ProjectController {
     private final ProjectService projectService;
     private final UserService userService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> addProject(@RequestParam Long ownerId, @RequestBody Project project) {
         return userService.getUserById(ownerId).map(owner -> {
@@ -23,18 +25,20 @@ public class ProjectController {
         }).orElse(ResponseEntity.badRequest().build());
     }
 
-    //TODO @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<?> getAllProjects() {
         return ResponseEntity.ok(projectService.getAllProjects());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #username == principal.email")
     @GetMapping("/users")
     public ResponseEntity<?> getUserProjects(@RequestParam String username) {
         return ResponseEntity.ok(projectService.getAllUserProjects(username));
     }
 
     //TODO @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getProjectById(@PathVariable Long id) {
         return projectService.getProjectById(id)
@@ -42,6 +46,7 @@ public class ProjectController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/byName/{name}")
     public ResponseEntity<?> getProjectByName(@PathVariable String name) {
         return projectService.getProjectByProjectName(name)
@@ -49,6 +54,7 @@ public class ProjectController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateProjectById(@PathVariable Long id, @RequestBody Project project) {
         Project updatedProject = projectService.updateProjectById(id, project);
@@ -57,6 +63,7 @@ public class ProjectController {
                 ResponseEntity.notFound().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProjectById(@PathVariable Long id) {
          projectService.deleteProjectById(id);

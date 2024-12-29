@@ -72,13 +72,13 @@ public class Project {
 
     @JsonProperty("projectOwnerId")
     public long getProjectOwnerId(){
-        return projectOwner.getUserId();
+        return projectOwner.getId();
     }
 
     @JsonProperty(value = "MaintainersIds", access = JsonProperty.Access.READ_ONLY)
     public List<Map<String, Long>> getProjectMaintainersIds() {
         return projectMaintainers.stream()
-                .map(user -> Map.of("userId", user.getUserId()))
+                .map(user -> Map.of("userId", user.getId()))
                 .toList();
     }
 
@@ -86,7 +86,7 @@ public class Project {
         Iterator<User> iterator = projectMaintainers.iterator();
         while (iterator.hasNext()) {
             User maintainer = iterator.next();
-            if (maintainer.getUserId().equals(userId)) {
+            if (maintainer.getId().equals(userId)) {
                 iterator.remove();
                 break;
             }

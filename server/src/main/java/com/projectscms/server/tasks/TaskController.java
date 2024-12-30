@@ -1,6 +1,5 @@
 package com.projectscms.server.tasks;
 
-import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public class TaskController {
     @GetMapping
  //   @RolesAllowed("ADMIN")
     @PreAuthorize("hasRole('ADMIN')")
-    Page<Task> getTasks(@RequestParam(name = "page", defaultValue = "0") int page,
+    public Page<Task> getTasks(@RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "size", defaultValue = "20") int size){
         Pageable pageable = PageRequest.of(page, size);
         return taskService.getTasks(pageable);
@@ -47,7 +46,7 @@ public class TaskController {
         try{
             Task createdTask = taskService.addTask(task);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("/{categoryId}").buildAndExpand(createdTask.getId()).toUri();
+                    .path("/{taskId}").buildAndExpand(createdTask.getId()).toUri();
             return ResponseEntity.created(location).build();
         } catch (Exception e){
             LOG.error(">>>addTask<<< ERROR: ", e);

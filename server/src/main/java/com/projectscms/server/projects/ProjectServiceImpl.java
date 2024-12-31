@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +73,8 @@ public class ProjectServiceImpl implements ProjectService {
         if (projectOpt.isPresent()) {
             Project project = projectOpt.get();
 
+            project.setProjectMaintainers(new HashSet<>(project.getProjectMaintainers()));
+            project.setTaskList(new ArrayList<>(project.getTaskList()));
             project.setProjectOwner(null);
 
             project.getProjectMaintainers().clear();

@@ -20,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@Table(name = "users") // uncomment when performing integration tests
 public class User implements UserDetails {
 
     @Id
@@ -34,7 +35,7 @@ public class User implements UserDetails {
 
     private String indexNr;
 
-    @Email(regexp = "^(.+)@(pbs\\.edu\\.pl)$")
+    @Email
     @NotBlank
     @Column(unique = true)
     private String email;
@@ -52,6 +53,7 @@ public class User implements UserDetails {
     private Set<Project> ownedProjects;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_"+role.name()))

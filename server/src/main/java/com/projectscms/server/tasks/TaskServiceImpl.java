@@ -1,6 +1,7 @@
 package com.projectscms.server.tasks;
 
 import com.projectscms.server.projects.ProjectServiceImpl;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

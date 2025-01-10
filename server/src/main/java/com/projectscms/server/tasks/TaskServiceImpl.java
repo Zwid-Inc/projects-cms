@@ -1,6 +1,7 @@
 package com.projectscms.server.tasks;
 
 import com.projectscms.server.projects.ProjectServiceImpl;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,14 +59,18 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public void deleteTaskById(Long id) {
+    public boolean deleteTaskById(Long id) {
 
         Optional<Task> taskOpt = taskRepository.findById(id);
+        if(taskOpt.isEmpty()){
+            return false;
+        }
         taskOpt.ifPresent(task -> {
             task.setProject(null);
             taskRepository.save(task);
             taskRepository.deleteById(id);
         });
+        return true;
 
     }
 }

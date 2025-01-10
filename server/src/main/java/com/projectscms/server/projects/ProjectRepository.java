@@ -11,7 +11,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByProjectOwnerEmail(String email);
     Optional<Project> findByProjectName(String projectName);
 
-    @Query("SELECT p FROM Project p JOIN p.projectMaintainers pm WHERE pm.userId = :userId")
+    @Query("SELECT p FROM Project p JOIN p.projectMaintainers pm WHERE pm.id = :userId")
     List<Project> findByMaintainersContains(@Param("userId") Long userId);
 
 }

@@ -15,5 +15,5 @@ public interface TaskService
     Optional<Task> getTaskById(Long id);
     Optional<Task> getTaskByName(String taskName);
     Optional<Task> updateTaskById(Long id, Task task);
-    void deleteTaskById(Long id);
+    boolean deleteTaskById(Long id);
 }

@@ -31,7 +31,6 @@ public class Task {
     private String description;
 
     @CreationTimestamp
-    @NotNull
     private LocalDateTime creationDateTime;
 
     @ManyToOne

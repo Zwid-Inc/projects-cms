@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 
 interface Task {
   id: number;
@@ -55,20 +56,22 @@ export default function TasksPage() {
       <h1 className="text-2xl font-bold mb-4">Tasks List</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {tasks.map((task) => (
-          <Card key={task.id} className="w-full">
-            <CardHeader>
-              <CardTitle>{task.taskName}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600">
-                Sequence: {task.sequenceNr}
-              </p>
-              <p className="mt-2">{task.description}</p>
-              <p className="text-xs text-gray-500 mt-2">
-                Created: {new Date(task.creationDateTime).toLocaleString()}
-              </p>
-            </CardContent>
-          </Card>
+          <Link href={`/tasks/${task.id}`} key={task.id}>
+            <Card className="w-full hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle>{task.taskName}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600">
+                  Sequence: {task.sequenceNr}
+                </p>
+                <p className="mt-2">{task.description}</p>
+                <p className="text-xs text-gray-500 mt-2">
+                  Created: {new Date(task.creationDateTime).toLocaleString()}
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
     </div>

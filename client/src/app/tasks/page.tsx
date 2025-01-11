@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Task {
   id: number;
@@ -18,6 +19,8 @@ interface TasksResponse {
 }
 
 export default function TasksPage() {
+  const router = useRouter();
+
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,10 +28,30 @@ export default function TasksPage() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/tasks");
+        const token = localStorage.getItem("jwt");
+
+        if (!token) {
+          router.push("/login");
+          return;
+        }
+
+        const response = await fetch("http://localhost:8080/api/tasks", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.status === 401) {
+          localStorage.removeItem("jwt");
+          router.push("/login");
+          return;
+        }
+
         if (!response.ok) {
           throw new Error("Failed to fetch tasks");
         }
+
         const data: TasksResponse = await response.json();
         setTasks(data.content);
         setIsLoading(false);
@@ -41,7 +64,7 @@ export default function TasksPage() {
     };
 
     fetchTasks();
-  }, []);
+  }, [router]);
 
   if (isLoading) {
     return <div className="p-4 text-center">Loading tasks...</div>;

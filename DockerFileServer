@@ -3,7 +3,7 @@ WORKDIR /server
 COPY server/build.gradle server/settings.gradle ./
 COPY server/gradlew server/gradlew.bat ./
 COPY server/gradle ./gradle
-COPY server/.env ./
+#COPY server/.env ./
 RUN chmod +x gradlew
 RUN ./gradlew dependencies --no-daemon
 COPY server/ ./

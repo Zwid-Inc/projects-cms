@@ -1,15 +1,15 @@
 services:
-  # client:
-  #   build:
-  #     context: .
-  #     dockerfile: DockerFileClient
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     NODE_ENV: dev
-  #     NEXT_PUBLIC_API_URL: http://server:8080
-  #   networks:
-  #     - app-network
+  client:
+    build:
+      context: .
+      dockerfile: DockerFileClient
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: dev
+      NEXT_PUBLIC_API_URL: http://server:8080
+    networks:
+      - app-network
 
   server:
     build:
@@ -21,13 +21,11 @@ services:
       - database
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://project_cms-db:3306/project_cms
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: p@ssw0rd
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      CLIENT_URL: ${CLIENT_URL}
-      SECRET_KEY: ${SECRET_KEY}
-    env_file:
-      - server/.env
+      CLIENT_URL: localhost:3000
+      SECRET_KEY: MzBq1khrENW2b0kpEj3xq4GqPO9xkmA3b2Pv6Rz9Uu1FKmTnXtHVOqLWY2vcbhmC7HFoEyRtFAkMk8+L8akMzQ==
     networks:
       - app-network
 
@@ -40,8 +38,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: project_cms
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: user
+      MYSQL_PASSWORD: p@ssw0rd
     volumes:
       - project_cms-db_data:/var/lib/mysql
     networks:

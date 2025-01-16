@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -63,6 +64,28 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    //Reset Password Token
+    private String token;
+    private LocalDateTime tokenExpiryDate;
+
+    public void generateToken(String token) {
+        this.token = token;
+        this.tokenExpiryDate = LocalDateTime.now().plusMinutes(15);
+    }
+
+    public void clearToken() {
+        this.token = null;
+        this.tokenExpiryDate = null;
+    }
+
+    public LocalDateTime getTokenExpirationTime() {
+        return tokenExpiryDate;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

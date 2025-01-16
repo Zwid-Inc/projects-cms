@@ -1,16 +1,10 @@
 "use client";
 
-import * as React from "react";
 import {
   AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
   GalleryVerticalEnd,
   Map,
   PieChart,
-  Settings2,
   SquareTerminal,
 } from "lucide-react";
 
@@ -26,28 +20,22 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
-// This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "ikar",
+    email: "ikar@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Admin",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
     {
-      name: "Acme Corp.",
+      name: "User",
       logo: AudioWaveform,
       plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
     },
   ],
   navMain: [
@@ -69,11 +57,6 @@ const data = {
       name: "Projects",
       url: "/projects",
       icon: PieChart,
-    },
-    {
-      name: "Account",
-      url: "/account",
-      icon: Map,
     },
   ],
 };

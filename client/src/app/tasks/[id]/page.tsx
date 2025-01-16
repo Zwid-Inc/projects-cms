@@ -44,33 +44,33 @@ export default function TaskPage() {
     router.push(`/tasks/${id}/edit`);
   };
 
-  const handleDelete = async () => {
-    setIsDeleting(true);
-    try {
-      const response = await fetch(`http://localhost:8080/api/tasks/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete task");
-      }
-
-      router.push("/tasks");
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete task");
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
   useEffect(() => {
     const fetchTask = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/tasks/${id}`);
+        const token = localStorage.getItem("jwt");
+
+        if (!token) {
+          router.push("/login");
+          return;
+        }
+
+        const response = await fetch(`http://localhost:8080/api/tasks/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.status === 401) {
+          localStorage.removeItem("jwt");
+          router.push("/login");
+          return;
+        }
+
         if (!response.ok) {
           throw new Error("Failed to fetch task");
         }
+
         const data = await response.json();
         setTask(data);
       } catch (err) {
@@ -81,7 +81,47 @@ export default function TaskPage() {
     };
 
     if (id) fetchTask();
-  }, [id]);
+  }, [id, router]);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      const token = localStorage.getItem("jwt");
+
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+
+      // Fix: Change URL from projects to tasks
+      const response = await fetch(`http://localhost:8080/api/tasks/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem("jwt");
+        router.push("/login");
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error("Failed to delete task");
+      }
+
+      // Fix: Change redirect to tasks page
+      router.push("/tasks");
+      router.refresh();
+    } catch (err) {
+      console.error("Delete error:", err);
+      setError(err instanceof Error ? err.message : "Failed to delete task");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

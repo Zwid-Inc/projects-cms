@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 interface Maintainer {
   userId: number;
@@ -34,21 +37,42 @@ export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/projects");
+        const token = localStorage.getItem("jwt");
+
+        if (!token) {
+          router.push("/login");
+          return;
+        }
+
+        const response = await fetch("http://localhost:8080/api/projects", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.status === 401) {
+          localStorage.removeItem("jwt");
+          router.push("/login");
+          return;
+        }
+
         if (!response.ok) {
           throw new Error("Failed to fetch projects");
         }
+
         const data = await response.json();
         setProjects(data);
-        setIsLoading(false);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred"
         );
+      } finally {
         setIsLoading(false);
       }
     };
@@ -67,6 +91,12 @@ export default function ProjectsPage() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Projects List</h1>
+      <div className="flex justify-between items-center mb-4">
+        <Button onClick={() => router.push("/projects/create")}>
+          <Plus className="mr-2 h-4 w-4" />
+          Add Project
+        </Button>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {projects.map((project) => (
           <Link href={`/projects/${project.id}`} key={project.id}>

@@ -1,9 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Pencil, Trash2 } from "lucide-react";
 interface Task {
   id: number;
   taskName: string;
@@ -31,15 +43,73 @@ export default function ProjectPage() {
   const pathname = usePathname();
   const id = pathname.split("/").pop();
 
+  const router = useRouter();
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleEdit = () => {
+    router.push(`/projects/${id}/edit`);
+  };
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      const token = localStorage.getItem("jwt");
+      const response = await fetch(`http://localhost:8080/api/projects/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem("jwt");
+        router.push("/login");
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error("Failed to delete project");
+      }
+
+      router.push("/projects");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete project");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   useEffect(() => {
     const fetchProject = async () => {
       try {
+        const token = localStorage.getItem("jwt");
+
+        if (!token) {
+          router.push("/login");
+          return;
+        }
+
         const response = await fetch(
-          `http://localhost:8080/api/projects/${id}`
+          `http://localhost:8080/api/projects/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
         );
+
+        if (response.status === 401) {
+          localStorage.removeItem("jwt");
+          router.push("/login");
+          return;
+        }
+
         if (!response.ok) {
           throw new Error("Failed to fetch project");
         }
+
         const data = await response.json();
         setProject(data);
       } catch (err) {
@@ -60,7 +130,41 @@ export default function ProjectPage() {
     <div className="container mx-auto p-4">
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>{project.projectName}</CardTitle>
+          <div className="flex justify-between items-center">
+            <CardTitle>{project?.projectName}</CardTitle>
+            <div className="space-x-2">
+              <Button variant="outline" size="sm" onClick={handleEdit}>
+                <Pencil className="h-4 w-4 mr-2" />
+                Edit
+              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" size="sm">
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      the project.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleDelete}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? "Deleting..." : "Delete"}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <p className="mb-2">{project.projectDescription}</p>

@@ -80,6 +80,14 @@ export default function LoginPage() {
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
+           <div className="text-center mt-4">
+                <button
+                  className="text-blue-500 underline text-sm"
+                  onClick={() => router.push("/forgot-password")}
+                >
+                 Forgot your password?
+                </button>
+          </div>
         </CardContent>
       </Card>
     </div>

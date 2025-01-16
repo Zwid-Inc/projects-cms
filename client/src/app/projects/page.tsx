@@ -78,7 +78,7 @@ export default function ProjectsPage() {
     };
 
     fetchProjects();
-  }, []);
+  }, [router]);
 
   if (isLoading) {
     return <div className="p-4 text-center">Loading projects...</div>;

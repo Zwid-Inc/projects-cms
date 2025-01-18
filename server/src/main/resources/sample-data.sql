@@ -1,34 +1,34 @@
 
 -- users
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("anna.kozak@pbs.edu.pl",111222,"Kozak","Anna","test123");
+VALUES ("anna.kozak@pbs.edu.pl",111222,"Kozak","Anna","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("anna.dymana@pbs.edu.pl",222333,"Dymana","Anna","test123");
+VALUES ("anna.dymana@pbs.edu.pl",222333,"Dymana","Anna","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("admin.test@pbs.edu.pl",333444,"Test","Admin","test123");
+VALUES ("admin.test@pbs.edu.pl",333444,"Test","Admin","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("secondadmin.test@pbs.edu.pl",444555,"Test","Second admin","test123");
+VALUES ("secondadmin.test@pbs.edu.pl",444555,"Test","Second admin","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("john.doe@pbs.edu.pl",555666,"Doe","John","test123");
+VALUES ("john.doe@pbs.edu.pl",555666,"Doe","John","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("jan.kozaczek@pbs.edu.pl",666777,"Kozaczek","Jan","test123");
+VALUES ("jan.kozaczek@pbs.edu.pl",666777,"Kozaczek","Jan","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("geralt.bialy@pbs.edu.pl",777888,"Bialy","Geralt","test123");
+VALUES ("geralt.bialy@pbs.edu.pl",777888,"Bialy","Geralt","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("jacek.nowak@pbs.edu.pl",888999,"Nowak","Jacek","test123");
+VALUES ("jacek.nowak@pbs.edu.pl",888999,"Nowak","Jacek","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("genowefa.kowalska@pbs.edu.pl",112223,"Kowalska","Genowefa","test123");
+VALUES ("genowefa.kowalska@pbs.edu.pl",112223,"Kowalska","Genowefa","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 
 INSERT INTO user (email,index_nr,last_name,name,password)
-VALUES ("maria.wesolowska@pbs.edu.pl",113224,"Wesolowska","Maria","test123");
+VALUES ("maria.wesolowska@pbs.edu.pl",113224,"Wesolowska","Maria","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 
 
 -- user_roles

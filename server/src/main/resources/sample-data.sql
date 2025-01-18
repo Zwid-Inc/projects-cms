@@ -1,5 +1,6 @@
 
 -- users
+-- password for all users is "test123"
 INSERT INTO user (email,index_nr,last_name,name,password)
 VALUES ("anna.kozak@pbs.edu.pl",111222,"Kozak","Anna","$2a$12$JIP0OjRJSWE4qKbvcUssOOlwOcNeuMZcz5w/3qd18Q0surkU9EC2y");
 

@@ -38,6 +38,8 @@ export default function TasksPage() {
         }
 
         const response = await fetch("http://localhost:8080/api/tasks", {
+          cache: "no-store",
+          next: { revalidate: 0 },
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -56,16 +58,18 @@ export default function TasksPage() {
 
         const data: TasksResponse = await response.json();
         setTasks(data.content);
-        setIsLoading(false);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred"
         );
+      } finally {
         setIsLoading(false);
       }
     };
 
     fetchTasks();
+    // Add router.refresh() to force revalidation
+    router.refresh();
   }, [router]);
 
   if (isLoading) {

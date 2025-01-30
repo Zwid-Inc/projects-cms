@@ -34,7 +34,7 @@ export default function LoginPage() {
 
       const data = await response.json();
       localStorage.setItem("jwt", data.token);
-      router.push("/dashboard");
+      router.push("/");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
@@ -80,13 +80,13 @@ export default function LoginPage() {
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
-           <div className="text-center mt-4">
-                <button
-                  className="text-blue-500 underline text-sm"
-                  onClick={() => router.push("/forgot-password")}
-                >
-                 Forgot your password?
-                </button>
+          <div className="text-center mt-4">
+            <button
+              className="text-blue-500 underline text-sm"
+              onClick={() => router.push("/forgot-password")}
+            >
+              Forgot your password?
+            </button>
           </div>
         </CardContent>
       </Card>

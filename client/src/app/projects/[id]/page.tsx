@@ -15,7 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2 } from "lucide-react";
 interface Task {
   id: number;
   taskName: string;
@@ -182,12 +182,96 @@ export default function ProjectPage() {
         </CardContent>
       </Card>
 
-      <h2 className="text-xl font-bold mb-4">Tasks</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold">Tasks</h2>
+        <Button
+          onClick={() => router.push(`/tasks/create?projectId=${project.id}`)}
+        >
+          <Plus className="mr-2 h-4 w-4" />
+          Add Task
+        </Button>
+      </div>
       <div className="grid gap-4">
         {project.taskList.map((task) => (
           <Card key={task.id}>
             <CardHeader>
-              <CardTitle className="text-lg">{task.taskName}</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle className="text-lg">{task.taskName}</CardTitle>
+                <div className="space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => router.push(`/tasks/${task.id}/edit`)}
+                  >
+                    <Pencil className="h-4 w-4 mr-2" />
+                    Edit
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" size="sm">
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete the task.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={async () => {
+                            try {
+                              const token = localStorage.getItem("jwt");
+                              const response = await fetch(
+                                `http://localhost:8080/api/tasks/${task.id}`,
+                                {
+                                  method: "DELETE",
+                                  headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    "Content-Type": "application/json",
+                                  },
+                                }
+                              );
+
+                              if (!response.ok)
+                                throw new Error("Failed to delete task");
+
+                              // Fetch updated project data after successful deletion
+                              const projectResponse = await fetch(
+                                `http://localhost:8080/api/projects/${id}`,
+                                {
+                                  headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    "Content-Type": "application/json",
+                                  },
+                                }
+                              );
+
+                              if (!projectResponse.ok)
+                                throw new Error(
+                                  "Failed to fetch updated project"
+                                );
+
+                              const updatedProject =
+                                await projectResponse.json();
+                              setProject(updatedProject);
+                            } catch (err) {
+                              console.error("Failed to delete task:", err);
+                            }
+                          }}
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <p>{task.description}</p>

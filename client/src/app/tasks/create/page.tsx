@@ -39,6 +39,7 @@ export default function CreateTaskPage() {
     fetchProjects();
   }, []);
 
+  // Modify handleSubmit in create task page:
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -67,7 +68,9 @@ export default function CreateTaskPage() {
 
       if (!response.ok) throw new Error("Failed to create task");
 
-      router.push("/tasks");
+      // Change order of operations
+      await router.push("/tasks");
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Add small delay
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create task");
